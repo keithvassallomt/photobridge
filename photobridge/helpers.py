@@ -26,7 +26,8 @@ def run_applescript(script: str, *args) -> tuple[int, str, str]:
 
 def temp_folder() -> Path:
     """
-    Get the location of the ``tmp`` folder within TaskBridge's Application Data folder.
+    Get the location of the ``tmp`` folder within the PhotoBridge's Application Support folder.
+    Folder is created if necessary.
 
     :return: path to the ``tmp`` folder.
     """
@@ -38,6 +39,9 @@ def temp_folder() -> Path:
 def data_location() -> Path:
     """
     Get the location where PhotoBridge stores files.
+    Folder is created if necessary.
+
     :return: the location of the Application Support folder for PhotoBridge
     """
+    DATA_LOCATION.mkdir(parents=True, exist_ok=True)
     return DATA_LOCATION
