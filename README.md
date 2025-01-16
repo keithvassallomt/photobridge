@@ -146,7 +146,7 @@ In NextCloud, for example:
 The CLI has a few basic options you may find useful:
 
 | Option                     | Description                                                                                                                                                            |  
-|:---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|:---------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ```-h```                   | Display the usage instructions.                                                                                                                                        |
 | ```--save-current-state``` | Save the current folder state. Very useful the first time you run PhotoBridge so existing photos aren't re-uploaded. Use with ```--photos-folder```.                   |
 | ```--reset-database```     | Reset the internal database so all 'known' photos are forgotten. Useful if you screw something up!                                                                     |
