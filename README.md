@@ -152,6 +152,7 @@ The CLI has a few basic options you may find useful:
 | ```--reset-database```     | Reset the internal database so all 'known' photos are forgotten. Useful if you screw something up!                                                                     |
 | ```--photos-folder```      | Add the path to where your non-Apple (e.g. NextCloud) photos are stored. This is the folder which will be synchronised with Apple Photos.                              |
 | ```--dry-run```            | Use this to simulate a synchronisation without actually moving any data. Useful to confirm what PhotoBridge would do with your photos. Use with ```--photos-folder```. |
+| ```--log-level```          | Set the log level. One of 'debug', 'info', 'warning', 'critical'. Defaults to 'info'                                                                                   |
 
 ## See Also
 

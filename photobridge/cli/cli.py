@@ -4,18 +4,19 @@ import pathlib
 import shutil
 from datetime import datetime
 
-from photobridge import core as pb
+from photobridge import core as pb, helpers
 import argparse
 
-db_path = '../../photobridge.db'
+db_name = '../../photobridge.db'
 table_name = 'photobridge'
 logger: logging.Logger | None = None
 
 
-def setup_logging() -> logging.Logger:
+def setup_logging(log_level: str) -> logging.Logger:
     """
     Sets up the logging system.
 
+    :param log_level: log level (one of 'debug', 'info', 'warning', 'critical')
     :return: the logging helper for the CLI.
     """
 
@@ -25,7 +26,7 @@ def setup_logging() -> logging.Logger:
         'warning': logging.WARNING,
         'critical': logging.CRITICAL
     }
-    log_level = log_levels['debug']
+    log_level = log_levels[log_level]
 
     logging.basicConfig(
         level=log_level,
@@ -49,10 +50,10 @@ def do_sync(args: argparse.Namespace) -> bool:
     :param args: the arguments received from the command line
     :return: True if the operation requested succeeds
     """
-    global db_path
+    global db_name
 
     # Seed database
-    success, data = pb.seed_database(db_path, table_name)
+    success, data = pb.seed_database()
     if not success:
         logger.critical(data)
         return False
@@ -67,11 +68,11 @@ def do_sync(args: argparse.Namespace) -> bool:
     files_in_folder = data
 
     if args.dry_run:
-        db_path = "photobridge_dryrun.db"
-        shutil.copy('../../photobridge.db', 'photobridge_dryrun.db')
+        db_name = "photobridge_dryrun.db"
+        shutil.copy(helpers.data_location() / 'photobridge.db', helpers.data_location() / 'photobridge_dryrun.db')
 
     # Sync new files with database and get list of new files
-    success, data = pb.sync_files_with_database(files_in_folder, db_path, table_name)
+    success, data = pb.sync_files_with_database(files_in_folder, db_name, table_name)
     if not success:
         logger.critical(data)
         return False
@@ -83,7 +84,7 @@ def do_sync(args: argparse.Namespace) -> bool:
             print("DRY RUN: The following files would have been imported: {}".format(", ".join(new_files)))
         else:
             print("DRY RUN: No new files would have been imported.")
-        os.remove('photobridge_dryrun.db')
+        os.remove(helpers.data_location() / 'photobridge_dryrun.db')
         return True
 
     if not args.save_current_state and not args.dry_run:
@@ -172,10 +173,18 @@ def main() -> None:
         help='save the current list of photos in the source folder as "known", so they are not imported next time. No import occurs.'
     )
 
-    global logger
-    logger = setup_logging()
+    parser.add_argument(
+        "--log-level",
+        type=str,
+        choices=['debug', 'info', 'critical', 'warning'],
+        default='info',
+        help="specify the logging level.")
 
     args = parser.parse_args()
+
+    global logger
+    logger = setup_logging(args.log_level)
+
     if args.save_current_state and not hasattr(args, 'photos_folder'):
         parser.error("--save-current-state requires --photos-folder to be specified.")
     elif args.dry_run and not hasattr(args, 'photos_folder'):

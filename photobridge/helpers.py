@@ -33,3 +33,11 @@ def temp_folder() -> Path:
     tmp_folder = DATA_LOCATION / 'tmp/'
     tmp_folder.mkdir(parents=True, exist_ok=True)
     return tmp_folder
+
+
+def data_location() -> Path:
+    """
+    Get the location where PhotoBridge stores files.
+    :return: the location of the Application Support folder for PhotoBridge
+    """
+    return DATA_LOCATION

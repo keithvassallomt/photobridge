@@ -9,6 +9,10 @@ from photobridge import helpers, apple_scripts
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".webp", ".heif", ".heic", ".cr2", ".nef"}
 VIDEO_EXTENSIONS = {".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm", ".m4v", ".3gp"}
 
+# Database settings
+DB_NAME = "photobridge.db"
+DB_TABLE_NAME = "photobridge"
+
 
 def get_media_in_path(path: str) -> tuple[bool, List[str]] | tuple[bool, str]:
     """
@@ -40,12 +44,12 @@ def get_media_in_path(path: str) -> tuple[bool, List[str]] | tuple[bool, str]:
     return True, media_files
 
 
-def sync_files_with_database(file_list: List[str], db_path: str, table_name: str) -> tuple[bool, List[str]] | tuple[bool, str]:
+def sync_files_with_database(file_list: List[str], db_name: str = DB_NAME, table_name: str = DB_TABLE_NAME) -> tuple[bool, List[str]] | tuple[bool, str]:
     """
     Synchronises the given list of file names with an SQLite database table.
 
     :param file_list: file names to check against the database.
-    :param db_path: path to the SQLite database file.
+    :param db_name: name of the SQLite database file.
     :param table_name: name of the table to store file names.
 
     :returns:
@@ -56,7 +60,7 @@ def sync_files_with_database(file_list: List[str], db_path: str, table_name: str
     """
     try:
         # Connect to the SQLite database
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(helpers.data_location() / db_name)
         cursor = conn.cursor()
 
         # Ensure the table exists
@@ -90,11 +94,11 @@ def sync_files_with_database(file_list: List[str], db_path: str, table_name: str
     return True, new_files
 
 
-def seed_database(db_path: str, table_name: str) -> tuple[bool, str]:
+def seed_database(db_name: str = DB_NAME, table_name: str = DB_TABLE_NAME) -> tuple[bool, str]:
     """
     Seeds the SQLite database with the specified table if it doesn't already exist.
 
-    :param db_path: path to the SQLite database file.
+    :param db_name: name of the SQLite database file.
     :param table_name: name of the table to be created and seeded.
 
     :returns:
@@ -105,7 +109,7 @@ def seed_database(db_path: str, table_name: str) -> tuple[bool, str]:
     """
     try:
         # Connect to the SQLite database
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(helpers.data_location() / db_name)
         cursor = conn.cursor()
 
         # Create the table if it doesn't exist
