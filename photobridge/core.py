@@ -80,7 +80,7 @@ def sync_files_with_database(file_list: List[str], db_name: str = DB_NAME, table
 
         # Add new files to the database
         for file in new_files:
-            cursor.execute(f"INSERT OR IGNORE INTO {table_name} (filename) VALUES (?)", (file,))
+            cursor.execute(f"INSERT INTO {table_name} (filename) VALUES (?)", (file,))
 
         # Commit changes and close the connection
         conn.commit()
