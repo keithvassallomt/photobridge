@@ -67,8 +67,8 @@ def do_sync(args: argparse.Namespace) -> bool:
     # Sync new files with database and get list of new files
     logger.info("Now building database. This can take some time for very large libraries.")
     if args.dry_run:
-        success, data = pb.sync_files_with_database(files_in_folder, "photobridge_dryrun.db")
         shutil.copy(helpers.data_location() / 'photobridge.db', helpers.data_location() / 'photobridge_dryrun.db')
+        success, data = pb.sync_files_with_database(files_in_folder, "photobridge_dryrun.db")
     else:
         success, data = pb.sync_files_with_database(files_in_folder)
     if not success:
