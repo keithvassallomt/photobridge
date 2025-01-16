@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "photobridge"
+version = "0.1.0"
+description = "Export photos from a local folder to Apple Photos."
+keywords = ["sync", "photo sync", "cloud photos"]
+authors = ["Keith Vassallo <keith@vassallo.cloud>"]
+readme = "README.md"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Environment :: MacOS X",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Natural Language :: English",
+  "Operating System :: MacOS",
+  "Topic :: Utilities"
+]
+license = "GPL-3.0-or-later"
+homepage = "https://github.com/keithvassallomt/photobridge"
+repository = "https://github.com/keithvassallomt/photobridge"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+photobridge = 'photobridge:main'
