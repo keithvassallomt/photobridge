@@ -28,4 +28,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-photobridge = 'cli:main'
+photobridge = 'photobridge.cli.cli:main'

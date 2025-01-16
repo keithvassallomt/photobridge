@@ -7,7 +7,7 @@ from datetime import datetime
 from photobridge import core as pb
 import argparse
 
-db_path = 'photobridge.db'
+db_path = '../../photobridge.db'
 table_name = 'photobridge'
 logger: logging.Logger | None = None
 
@@ -68,7 +68,7 @@ def do_sync(args: argparse.Namespace) -> bool:
 
     if args.dry_run:
         db_path = "photobridge_dryrun.db"
-        shutil.copy('photobridge.db', 'photobridge_dryrun.db')
+        shutil.copy('../../photobridge.db', 'photobridge_dryrun.db')
 
     # Sync new files with database and get list of new files
     success, data = pb.sync_files_with_database(files_in_folder, db_path, table_name)
@@ -122,9 +122,9 @@ def process_args(args: argparse.Namespace) -> bool:
     :return: True if the requested operation succeeds
     """
     if args.reset_database:
-        if os.path.exists('photobridge.db'):
+        if os.path.exists('../../photobridge.db'):
             try:
-                os.remove('photobridge.db')
+                os.remove('../../photobridge.db')
             except PermissionError as e:
                 logger.critical('Unable to delete internal database: {}'.format(e))
                 return False
