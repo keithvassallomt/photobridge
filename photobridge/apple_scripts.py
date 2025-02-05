@@ -28,12 +28,14 @@ end repeat
 set filteredFileList to {}
 tell application "Photos"
     set pbAlbum to album "PhotoBridge"
-    set albumPictureNames to filename of media items of pbAlbum
+    -- Get list of all filenames in Photos
+    set allMediaFileNames to filename of media items
     repeat with anAlias in fileList
+        -- Get proper filename of file from exported list
         tell application "Finder" to set pictureName to name of file anAlias
-        if not (pictureName is in albumPictureNames) then set end of filteredFileList to contents of anAlias
+        -- Add the file as one to import if its filename is not already in Photos
+        if not (pictureName is in allMediaFileNames) then set end of filteredFileList to contents of anAlias
     end repeat
     if filteredFileList is not {} then import filteredFileList into pbAlbum with skip check duplicates
 end tell
-end run
-"""
+end run"""
